@@ -1,16 +1,44 @@
 
 const { Router } = require('express');
+const { body, check, query } = require('express-validator');
 const { userGet, userPut, userPost, userDelete, userPatch } = require('../controllers/user');
+const { validateRole, validateEmail, existUserId, userExistById, existeUsuarioPorId } = require('../helpers/db-validators');
+const { validarCampos } = require('../middlewares/validations');
+
 
 const router = Router();
 
-    router.get('/', userGet);
+    router.get('/',[
+        query("limite", "El valor de 'limite' debe ser numérico")
+            .isNumeric()
+            .optional(),
+        query("desde", "El valor de 'desde' debe ser numérico")
+        .isNumeric()
+        .optional(),
+        validarCampos
+    ] , userGet);
     
-    router.post('/', userPost);
+    router.post('/',[
+        body('name', 'El nombre de usuario es obligatorio.').not().isEmpty(),
+        body('pass', 'El password debe ser más de 6 letras.').isLength({ min: 6 }),
+        body('mail', 'El correo no es válido').isEmail(),
+        body('mail').custom( validateEmail ),
+        // body('role', 'No es un role válido').isIn(['ADMIN_ROLE', 'USER_ROLE']),
+        body('role').custom( validateRole ),
+        validarCampos
+    ], userPost);
     
-    router.put('/:id', userPut);
+    router.put('/:id',[
+        // body('id', 'No es un ID válido').isMongoId().bail(),
+        check('id').custom( existeUsuarioPorId ),
+        body('role').custom( validateRole ), 
+        validarCampos
+    ],userPut );
     
-    router.delete('/', userDelete);
+    router.delete('/:id',[
+        check('id').custom( existeUsuarioPorId ),
+        validarCampos
+    ] , userDelete);
     
     router.patch('/', userPatch);
 
