@@ -6,17 +6,17 @@ const dbConnection = async() =>{
     try {
         mongoose.set("strictQuery", false);
         
-        await mongoose.connect( process.env.MONGODB_ATLAS )
-            // { useNewUrlParser: true, useUnifiedTopology: true},
-            // (err, res) => {
-            //  if(err){
-            //      console.log("ERROR AL CONECTAR".red);
-            //      throw err;
-            //  } 
-            //  console.log('Base de datos online'.green);
-            // });
+        await mongoose.connect( process.env.MONGODB_ATLAS,
+            { useNewUrlParser: true, useUnifiedTopology: true},
+            (err, res) => {
+             if(err){
+                 console.log("ERROR AL CONECTAR".red);
+                 throw err;
+             } 
+             console.log('Base de datos online'.green);
+            });
 
-        console.log('Base de datos online'.green);
+        // console.log('Base de datos online'.green);
         
 
     } catch (error) {
