@@ -19,11 +19,10 @@ const validateEmail = async( mail = '' ) =>{
 
 const existUserId = async( id ) => {
 
-    const userExist = await User.findOne( { _id: id} );
-    
-
-    if( !userExist ){
-        throw new Error(`El id: ${ id } no existe.`);
+    // Verificar si el correo existe
+    const userExist = await Usuario.findById(id);
+    if ( !userExist ) {
+        throw new Error(`El id no existe ${ id }`);
     }
 }
 
@@ -47,7 +46,8 @@ const userExistById = async( id ) => {
 
 const existeUsuarioPorId = async( id ) => {
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
-        const existeUsuario = await User.findById( id ).exec();
+        const existeUsuario = await User.findById( id );
+
         if ( !existeUsuario ) {
             throw new Error(`El id ${ id } no existe`);
         }

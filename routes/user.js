@@ -3,8 +3,12 @@ const { Router } = require('express');
 const { body, check, query } = require('express-validator');
 const { userGet, userPut, userPost, userDelete, userPatch } = require('../controllers/user');
 const { validateRole, validateEmail, existUserId, userExistById, existeUsuarioPorId } = require('../helpers/db-validators');
-const { validarCampos } = require('../middlewares/validations');
 
+// const { validateJWT } = require('../middlewares/validate-jwt');
+// const { validateAdminRole, haveRole } = require('../middlewares/validate-roles');
+// const { validarCampos } = require('../middlewares/validations');
+
+const { validateJWT, haveRole, validarCampos } = require('../middlewares');
 
 const router = Router();
 
@@ -36,11 +40,16 @@ const router = Router();
     ],userPut );
     
     router.delete('/:id',[
+        validateJWT,
+        // validateAdminRole,
+        haveRole('ADMIN_ROLE', 'VENTAS_ROLE'),
         check('id').custom( existeUsuarioPorId ),
         validarCampos
-    ] , userDelete);
+    ], userDelete);
     
     router.patch('/', userPatch);
+
+    
 
 
 module.exports = router;

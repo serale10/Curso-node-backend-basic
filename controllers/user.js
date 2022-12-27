@@ -71,13 +71,19 @@ const userDelete = async(req, res = response) => {
 
     const { id } = req.params;
 
+
     //BORRAR FISICAMENTE
     // no se recomienda porque puede borrar cosas que no debe el usuario
     // const user = await User.findByIdAndDelete( id );
 
-    const user = await User.findByIdAndUpdate( id, {status: false}, {new: true})
 
-    res.json(user);
+    const user = await User.findByIdAndUpdate( id, {status: false} );
+
+    //const userIn = req.user;
+
+    res.json( {
+        user
+    }  );
 }
 
 const userPatch = (req, res = response) => {
