@@ -14,7 +14,8 @@ const userGet = async(req = request, res = response) => {
 
     // const total = await User.countDocuments();
 
-    const status = { status: true};
+    // ! En esta variable se almacena cuantos registros estan en true
+    const status = { status: true}; 
 
     const [total, users] = await Promise.all([
         User.countDocuments(status),
@@ -72,7 +73,7 @@ const userDelete = async(req, res = response) => {
     const { id } = req.params;
 
 
-    //BORRAR FISICAMENTE
+    // !BORRAR FISICAMENTE
     // no se recomienda porque puede borrar cosas que no debe el usuario
     // const user = await User.findByIdAndDelete( id );
 
