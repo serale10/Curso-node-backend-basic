@@ -98,6 +98,28 @@ const existProductID = async( id ) => {
     }
 }
 
+const colectionsAllowed = ( colection = '', colections = []) =>{
+    
+    const include = colections.includes( colection );
+
+    if( !include ){
+        
+        throw new Error(`La colección ${ colection } no es permitida, ${ colections}`);
+    }
+
+    return true;
+}
+
+const mongoIDValid = async( id ) =>{
+
+    if (id.match(/^[0-9a-fA-F]{24}$/)) {        
+        return true;
+    }else{
+        throw new Error(`${ id } no es un ID válido`);
+    }
+}
+
+
 
 module.exports = {
     validateRole,
@@ -107,5 +129,7 @@ module.exports = {
     existeUsuarioPorId,
     existCategoryID,
     validateNameCategory,
-    existProductID
+    existProductID,
+    colectionsAllowed,
+    mongoIDValid
 }
